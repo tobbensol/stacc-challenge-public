@@ -25,4 +25,15 @@ with open("data/transactions.json", "r") as f:
 # Core program
 print(accounts)
 
-accounts.plot_account_activity("acc012", transactions.transactions)
+accounts.add_account(
+    {
+    "id": "acc222",
+      "account_number": "********5121",
+      "account_type": "Savings",
+      "balance": 4000.0,
+      "currency": "NOK",
+      "owner": "Tobias"
+    }
+)
+
+accounts.plot_account_activity("acc123", transactions.transactions)
