@@ -33,7 +33,7 @@ class Accounts():
         account = self.get_account(account_id)
         if not account:
             print("Account not found.")
-            return
+            return None
         
         account_balance = account["balance"]
         transaction_data = transactions.search(Query().account_id == account_id)
@@ -59,7 +59,7 @@ class Accounts():
 
     def plot_account_activity(self, account_id: str, transactions: TinyDB.table_class):
         timestamps, balances = self.get_balance_history(account_id, transactions)
-        
+
         #Linear regression
         days_since_first = [(date - timestamps[0]).days for date in timestamps]
         slope, intercept = np.polyfit(days_since_first, balances, 1)

@@ -1,7 +1,8 @@
 import json
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 from Account import Accounts
 from Transaction import Transactions
+from user_interface import UserInterface
 
 # Load and delete DB
 db = TinyDB("data/db.json")
@@ -23,17 +24,6 @@ with open("data/transactions.json", "r") as f:
         transactions.make_transaction(i)
 
 # Core program
-print(accounts)
-
-accounts.add_account(
-    {
-    "id": "acc222",
-      "account_number": "********5121",
-      "account_type": "Savings",
-      "balance": 4000.0,
-      "currency": "NOK",
-      "owner": "Tobias"
-    }
-)
-
-accounts.plot_account_activity("acc123", transactions.transactions)
+if __name__ == "__main__":
+    user_interface = UserInterface(accounts, transactions)
+    user_interface.start()
