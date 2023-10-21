@@ -1,8 +1,7 @@
-import datetime
-from locale import currency
-from random import randint
-import Account
+from datetime import datetime
+import random
 from Backend import Backend
+from ast import literal_eval
 
 class UserInterface:
     def __init__(self, backend: Backend):
@@ -12,28 +11,26 @@ class UserInterface:
         while True:
             choice = input("\n1. Add Account\n2. Make Transaction\n3. Plot Account Activity\n4. Quit\nEnter your choice: ")
 
-            if choice == '1':
-                account_data = self.get_account_data_from_user()
-                self.backend.accounts.add_account(account_data)
-                print(f"Successfully made account with the ID: {account_data['id']}")
-
-            elif choice == '2':
-                transaction_data = self.get_transaction_data_from_user()
-                self.backend.make_transaction(transaction_data)
-
-            elif choice == '3':
-                account_id = input("Enter account ID: ")
-                self.backend.plot_account_activity(account_id)
-
-            elif choice == '4':
-                break
+            match choice:
+                case '1':
+                    account_data = self.get_account_data_from_user()
+                    self.backend.accounts.add_account(account_data)
+                    print(f"Successfully made account with the ID: {account_data['id']}")
+                case '2':
+                    transaction_data = self.get_transaction_data_from_user()
+                    self.backend.make_transaction(transaction_data)
+                case '3':
+                    account_id = input("Enter account ID: ")
+                    self.backend.plot_account_activity(account_id)
+                case '4':
+                    break
 
     def get_transaction_data_from_user(self):
         # Implement code to get transaction data from the user (e.g., through input)
-        id_str = str(randint(0, 999))
+        id_str = str(random.randint(0, 999))
         id = "txn" + (3-len(id_str)) * "0" + id_str
         description = input("Description: ")
-        amount = eval(input("Amount: ")) #TODO: safeEval
+        amount = literal_eval(input("Amount: "))
         currency = input("Currency: ")
         account_id = input("Account_ID: ")
 
@@ -47,7 +44,7 @@ class UserInterface:
         
         return({
             "id": id,
-            "date": date,
+            "date": date.strftime("%Y-%m-%d"),
             "description": description,
             "amount": amount,
             "currency": currency,
@@ -56,12 +53,12 @@ class UserInterface:
 
     def get_account_data_from_user(self):
         # Implement code to get account data from the user (e.g., through input)
-        id_str = str(randint(0, 999))
+        id_str = str(random.randint(0, 999))
         id = "acc" + (3-len(id_str)) * "0" + id_str
-        account_str = str(randint(0, 9999))
+        account_str = str(random.randint(0, 9999))
         account_number = "*"*8 + (4-len(account_str)) * "0" + account_str
         account_type = input("AccountType: ")
-        balance = eval(input("Amount: ")) #TODO: safeEval
+        balance = literal_eval(input("Amount: "))
         currency = input("Currency: ")
         owner = input("Owner: ")
         
