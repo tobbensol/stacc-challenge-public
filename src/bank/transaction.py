@@ -2,17 +2,8 @@ from tinydb import TinyDB, Query
 from datetime import datetime, timedelta
 
 class Transactions:
-    def __init__(self, transactions: TinyDB):
-        self.transactions: TinyDB.table_class = transactions.table("transactions")
-
-    def get_user_transaction(self, account_id: str):
-        return self.transactions.search(Query().account_id == account_id)
-        
-    def get_transaction(self, id):
-        return self.transactions.search(Query().id == id)
-    
-    def add_transactions(self, transaction: dict):
-        self.transactions.insert(transaction)
+    def __init__(self, db: TinyDB):
+        self.transactions: TinyDB.table_class = db.table("transactions")
 
     def get_balance_history(self, account_id: str):
         #Gather info
@@ -36,6 +27,15 @@ class Transactions:
             balances.insert(0, change)
         
         return timestamps, balances
+    
+    def add_transactions(self, transaction: dict):
+        self.transactions.insert(transaction)
+
+    def get_transaction(self, id):
+        return self.transactions.search(Query().id == id)
+
+    def get_user_transaction(self, account_id: str):
+        return self.transactions.search(Query().account_id == account_id)
 
     def __repr__(self):
         string = ""

@@ -1,5 +1,6 @@
 from bank.account import Accounts
 from bank.transaction import Transactions
+from bank.saving_goal import Saving_goals
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -8,10 +9,11 @@ class Backend():
     def __init__(self, accounts: Accounts, transactions: Transactions):
         self.accounts: Accounts = accounts
         self.transactions: Transactions = transactions
+        self.saving_goals: Saving_goals
 
     def make_transaction(self, transaction: dict) -> None:
         self.transactions.add_transactions(transaction)
-        self.accounts.transaction(transaction)
+        self.accounts.change_balance(transaction)
 
     def get_balance_history(self, account_id: str):
         account = self.accounts.get_account(account_id)

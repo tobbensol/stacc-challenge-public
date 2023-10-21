@@ -1,16 +1,14 @@
 from tinydb import TinyDB, Query
+from tinydb.operations import add
 
 class Accounts():
-    def __init__(self, accounts: TinyDB):
-        self.accounts: TinyDB.table_class = accounts.table("accounts")
+    def __init__(self, db: TinyDB):
+        self.accounts: TinyDB.table_class = db.table("accounts")
     
-    def transaction(self, transaction: dict) -> None:
+    def change_balance(self, transaction: dict) -> None:
         amount = transaction["amount"]
         account_id = transaction["account_id"]
-        account = self.get_account(account_id)
-        if account:
-            account["balance"] = account.get("balance", 0) + amount
-            self.update_account(account)
+        self.accounts.update(add("balance", amount), Query().id == account_id)
 
     def update_account(self, account_data: dict):
         account_id = account_data["id"]
