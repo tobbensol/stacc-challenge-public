@@ -4,7 +4,8 @@
       "id": "sav001",
       "name": "Vacation",
       "goal": 15000,
-      "current_Amount": 5502.25,
+      "current_amount": 5502.25,
+      "monthly_payment": 123.45,
       "currency": "NOK",
       "account_id": "acc456"
     },
@@ -12,7 +13,8 @@
       "id": "sav002",
       "name": "Phone",
       "goal": 10000,
-      "current_Amount": 2408.5,
+      "current_amount": 2408.5,
+      "monthly_payment": 222.2,
       "currency": "NOK",
       "account_id": "acc123"
     },
@@ -20,7 +22,8 @@
       "id": "sav003",
       "name": "Car",
       "goal": 100000,
-      "current_Amount": 20000,
+      "current_amount": 20000,
+      "monthly_payment": 100,
       "currency": "NOK",
       "account_id": "acc123"
     }

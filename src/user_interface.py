@@ -46,7 +46,7 @@ Enter your choice:
             choice = input("""
 1. Add savings account
 2. Transfer to savings account
-3. Make monthly payment
+3. Make monthly payments
 4. Plot estimates
 5. Quit\n
 Enter your choice: 
@@ -59,13 +59,14 @@ Enter your choice:
                     savings_account, transaction = get_savings_transfer_from_user()
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
-                    pass
+                    self.backend.make_monthly_saving()
                 case "4":
                     pass
                 case "5":
                     break
                 case _:
                     print("Please enter a valid option")
+            print(self.backend.saving_goals)
 
 
 def get_transaction_data_from_user():

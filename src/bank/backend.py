@@ -59,6 +59,26 @@ class Backend:
         # Display the chart or save it to a file
         plt.show()
 
+    def make_monthly_saving(self) -> None:
+        goals = self.saving_goals.saving_goals.all()
+        for goal in goals:
+            account = self.accounts.get_account(goal["account_id"])
+            monthly_payment = goal["monthly_payment"]
+
+            if not account:
+                print("Account not found.")
+                return
+
+            if account["balance"] >= monthly_payment:
+                # Deduct the monthly payment from the account
+                transaction = utils.make_transaction(datetime.now().strftime("%Y-%m-%d"),
+                                                                    f"Monthly payment for {goal['name']}",
+                                                                    -monthly_payment,
+                                                                    goal["account_id"]
+                                                                    )
+                self.make_transaction(transaction)
+                self.saving_goals.change_balance(goal["id"], monthly_payment)
+
     def __repr__(self):
         return (f"Accounts:\n{self.accounts}\n" +
                 f"Transactions:\n{self.transactions}\n" +
