@@ -1,5 +1,5 @@
-from account import Accounts
-from transaction import Transactions
+from bank.account import Accounts
+from bank.transaction import Transactions
 
 from matplotlib import pyplot as plt
 import numpy as np

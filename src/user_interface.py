@@ -1,8 +1,8 @@
-from backend import Backend
+from bank.backend import Backend
 
 from datetime import datetime
-import random
 from ast import literal_eval
+import random
 
 class UserInterface:
     def __init__(self, backend: Backend):

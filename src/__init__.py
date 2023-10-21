@@ -1,7 +1,7 @@
-from account import Accounts
-from backend import Backend
-from transaction import Transactions
 from user_interface import UserInterface
+from bank.backend import Backend
+from bank.transaction import Transactions
+from bank.account import Accounts
 
 import json
 from tinydb import TinyDB

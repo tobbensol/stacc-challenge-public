@@ -1,7 +1,4 @@
 from tinydb import TinyDB, Query
-from matplotlib import pyplot as plt
-from datetime import datetime, timedelta
-import numpy as np
 
 class Accounts():
     def __init__(self, accounts: TinyDB):
