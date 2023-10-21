@@ -19,7 +19,7 @@ saving_goals = Saving_goals(db)
 backend = Backend(accounts, transactions, saving_goals)
 user_interface = UserInterface(backend)
 
-# Load data from provided files
+# Load data from provided files (mostly here for clean data every time)
 with open("data/accounts.json", "r") as f:
     contents = json.load(f)
     for i in contents["accounts"]:

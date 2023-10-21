@@ -1,5 +1,5 @@
-from bank.backend import Backend
-import utils
+from src.bank.backend import Backend
+import src.utils as utils
 
 from datetime import datetime
 from ast import literal_eval
