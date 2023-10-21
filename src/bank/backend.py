@@ -1,11 +1,12 @@
-from bank.account import Accounts
-from bank.transaction import Transactions
-from bank.saving_goal import Saving_goals
+from src.bank.account import Accounts
+from src.bank.transaction import Transactions
+from src.bank.saving_goal import Saving_goals
 
 from matplotlib import pyplot as plt
 import numpy as np
 
-class Backend():
+
+class Backend:
     def __init__(self, accounts: Accounts, transactions: Transactions):
         self.accounts: Accounts = accounts
         self.transactions: Transactions = transactions
@@ -29,10 +30,10 @@ class Backend():
         balance_history = self.get_balance_history(account_id)
         if not balance_history:
             return
-        
+
         timestamps, balances = balance_history
 
-        #Linear regression
+        # Linear regression
         days_since_first = [(date - timestamps[0]).days for date in timestamps]
         slope, intercept = np.polyfit(days_since_first, balances, 1)
         regression_line = slope * np.array(days_since_first) + intercept

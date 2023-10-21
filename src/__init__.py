@@ -10,7 +10,7 @@ from tinydb import TinyDB
 db = TinyDB("data/db.json")
 db.drop_tables()
 
-#Init tables
+# Init tables
 accounts = Accounts(db)
 transactions = Transactions(db)
 

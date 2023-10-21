@@ -1,10 +1,11 @@
 from tinydb import TinyDB, Query
 from tinydb.operations import add
 
-class Accounts():
+
+class Accounts:
     def __init__(self, db: TinyDB):
         self.accounts: TinyDB.table_class = db.table("accounts")
-    
+
     def change_balance(self, transaction: dict) -> None:
         amount = transaction["amount"]
         account_id = transaction["account_id"]
@@ -16,7 +17,7 @@ class Accounts():
 
     def add_account(self, account: dict) -> None:
         self.accounts.insert(account)
-    
+
     def remove_account(self, account_id: str) -> None:
         self.accounts.remove(Query().id == account_id)
 
