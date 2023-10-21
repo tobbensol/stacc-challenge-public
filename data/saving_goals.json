@@ -23,14 +23,6 @@
       "current_Amount": 20000,
       "currency": "NOK",
       "account_id": "acc123"
-    },
-  }
+    }
+  ]
 }
-
-
-    ID: int
-    Name: Str
-    Goal: int
-    Current_Amount: int
-    Currency: str
-    account_id: int,

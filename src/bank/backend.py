@@ -29,11 +29,10 @@ class Backend:
 
         return date, [account_balance + x for x in change]
 
-    def transfer_to_savings(self, savings_id: str, date: str, description: str, amount: float, account_id: str,
-                            currency: str = "NOK"):
-        transaction = utils.make_transaction(date, description, -amount, account_id, currency)
+    def transfer_to_savings(self, savings_id: str, transaction: dict):
+        transaction["account_id"] = self.saving_goals.get_saving_goal(savings_id)["account_id"]
         self.make_transaction(transaction)
-        self.saving_goals.change_balance(savings_id, amount)
+        self.saving_goals.change_balance(savings_id, transaction["amount"])
 
     def plot_account_activity(self, account_id: str) -> None:
         balance_history = self.get_balance_history(account_id)

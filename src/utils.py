@@ -17,7 +17,7 @@ def make_transaction(date: str, description: str, amount: float, account_id: str
     }
 
 
-def make_account(account_type: str, balance: str, owner: str, currency: str = "NOK"):
+def make_account(account_type: str, balance: float, owner: str, currency: str = "NOK"):
     return ({
         "id": generate_random_int_str("acc", 3),
         "account_number": generate_random_int_str("*"*8, 4),

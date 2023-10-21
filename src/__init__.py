@@ -1,8 +1,8 @@
-from user_interface import UserInterface
-from bank.backend import Backend
-from bank.transaction import Transactions
-from bank.account import Accounts
-from bank.saving_goal import Saving_goals
+from src.user_interface import UserInterface
+from src.bank.backend import Backend
+from src.bank.transaction import Transactions
+from src.bank.account import Accounts
+from src.bank.saving_goal import Saving_goals
 
 import json
 from tinydb import TinyDB
@@ -30,9 +30,9 @@ with open("data/transactions.json", "r") as f:
     for i in contents["transactions"]:
         backend.make_transaction(i)
 
-with open("data/saving_goal.json", "r") as f:
+with open("data/saving_goals.json", "r") as f:
     contents = json.load(f)
-    for i in contents["transactions"]:
+    for i in contents["saving_goals"]:
         pass
 
 # Core program
