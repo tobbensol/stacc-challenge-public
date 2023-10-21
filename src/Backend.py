@@ -1,8 +1,6 @@
-from tinydb import TinyDB, Query
-from Account import Accounts
-from Transaction import Transactions
+from account import Accounts
+from transaction import Transactions
 
-from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 import numpy as np
 

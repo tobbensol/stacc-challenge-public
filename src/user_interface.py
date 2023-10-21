@@ -1,6 +1,7 @@
+from backend import Backend
+
 from datetime import datetime
 import random
-from Backend import Backend
 from ast import literal_eval
 
 class UserInterface:

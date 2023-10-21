@@ -1,8 +1,8 @@
 import json
 from tinydb import TinyDB
-from Account import Accounts
-from Backend import Backend
-from Transaction import Transactions
+from account import Accounts
+from backend import Backend
+from transaction import Transactions
 from user_interface import UserInterface
 
 # Load and delete DB
