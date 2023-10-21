@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import numpy as np
 
 class Accounts():
-    def __init__(self, accounts: TinyDB.table_class):
-        self.accounts: TinyDB.table_class = accounts
+    def __init__(self, accounts: TinyDB):
+        self.accounts: TinyDB.table_class = accounts.table("accounts")
     
     def transaction(self, transaction: dict) -> None:
         amount = transaction["amount"]

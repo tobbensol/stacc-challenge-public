@@ -2,8 +2,8 @@ from tinydb import TinyDB, Query
 from datetime import datetime, timedelta
 
 class Transactions:
-    def __init__(self, transactions: TinyDB.table_class):
-        self.transactions: TinyDB.table_class = transactions
+    def __init__(self, transactions: TinyDB):
+        self.transactions: TinyDB.table_class = transactions.table("transactions")
 
     def get_user_transaction(self, account_id: str):
         return self.transactions.search(Query().account_id == account_id)

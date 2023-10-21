@@ -1,17 +1,18 @@
-import json
-from tinydb import TinyDB
 from account import Accounts
 from backend import Backend
 from transaction import Transactions
 from user_interface import UserInterface
+
+import json
+from tinydb import TinyDB
 
 # Load and delete DB
 db = TinyDB("data/db.json")
 db.drop_tables()
 
 #Init tables
-accounts = Accounts(db.table("accounts"))
-transactions = Transactions(db.table("transactions"))
+accounts = Accounts(db)
+transactions = Transactions(db)
 
 backend = Backend(accounts, transactions)
 user_interface = UserInterface(backend)
