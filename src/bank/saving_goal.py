@@ -14,7 +14,7 @@ class Saving_goals:
     """
 
     def __init__(self, db: TinyDB):
-        self.saving_goals: TinyDB.table_class = db.table("accounts")
+        self.saving_goals: TinyDB.table_class = db.table("saving_goals")
 
     def change_balance(self, id, amount) -> None:
         self.saving_goals.update(add("current_amount", amount), Query().id == id)

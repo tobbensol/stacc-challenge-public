@@ -58,3 +58,8 @@ class Backend:
 
         # Display the chart or save it to a file
         plt.show()
+
+    def __repr__(self):
+        return (f"Accounts:\n{self.accounts}\n" +
+                f"Transactions:\n{self.transactions}\n" +
+                f"Saving Goals\n{self.saving_goals}")

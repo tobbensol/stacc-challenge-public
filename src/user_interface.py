@@ -17,6 +17,7 @@ class UserInterface:
 2. Make Transaction
 3. Plot Account Activity
 4. Manage Savings
+5. Print DB
 5. Quit\n
 Enter your choice: 
 """)
@@ -34,6 +35,8 @@ Enter your choice:
                 case "4":
                     self.savings()
                 case "5":
+                    print(self.backend)
+                case "6":
                     break
                 case _:
                     print("Please enter a valid option")
@@ -41,19 +44,20 @@ Enter your choice:
     def savings(self):
         while True:
             choice = input("""
-                1. Add savings account
-                2. Transfer to savings account
-                3. Make monthly payment
-                4. Plot estimates
-                5. Quit\n
-                Enter your choice: 
-                """)
+1. Add savings account
+2. Transfer to savings account
+3. Make monthly payment
+4. Plot estimates
+5. Quit\n
+Enter your choice: 
+""")
             match choice:
                 case "1":
-                    pass
+                    savings_data = get_savings_account_from_user()
+                    self.backend.saving_goals.add_saving_goal(savings_data)
                 case "2":
-                    savings_id, savings_data = get_savings_account_from_user()
-                    self.backend.transfer_to_savings(savings_id, savings_data)
+                    savings_account, transaction = get_savings_transfer_from_user()
+                    self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
                     pass
                 case "4":
@@ -91,7 +95,7 @@ def get_savings_account_from_user():
     goal = " "
     while not goal.isnumeric():
         goal = input("How much does is cost? ")
-    account = input("Which account is this tied to?")
+    account = input("Which account is this tied to? ")
     return utils.make_savings_account(name, float(goal), 0, account)
 
 

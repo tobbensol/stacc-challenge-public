@@ -33,7 +33,7 @@ with open("data/transactions.json", "r") as f:
 with open("data/saving_goals.json", "r") as f:
     contents = json.load(f)
     for i in contents["saving_goals"]:
-        pass
+        saving_goals.add_saving_goal(i)
 
 # Core program
 if __name__ == "__main__":
