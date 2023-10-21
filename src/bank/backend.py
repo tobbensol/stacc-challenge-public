@@ -1,22 +1,25 @@
 from src.bank.account import Accounts
 from src.bank.transaction import Transactions
 from src.bank.saving_goal import Saving_goals
+import src.utils as utils
 
 from matplotlib import pyplot as plt
+from typing import Tuple, List
+from datetime import datetime
 import numpy as np
 
 
 class Backend:
-    def __init__(self, accounts: Accounts, transactions: Transactions):
+    def __init__(self, accounts: Accounts, transactions: Transactions, saving_goals: Saving_goals):
         self.accounts: Accounts = accounts
         self.transactions: Transactions = transactions
-        self.saving_goals: Saving_goals
+        self.saving_goals: Saving_goals = saving_goals
 
     def make_transaction(self, transaction: dict) -> None:
         self.transactions.add_transactions(transaction)
         self.accounts.change_balance(transaction)
 
-    def get_balance_history(self, account_id: str):
+    def get_balance_history(self, account_id: str) -> Tuple[List[datetime], List[int]]:
         account = self.accounts.get_account(account_id)
         if not account:
             print("Account not found.")
@@ -26,7 +29,13 @@ class Backend:
 
         return date, [account_balance + x for x in change]
 
-    def plot_account_activity(self, account_id: str):
+    def transfer_to_savings(self, savings_id: str, date: str, description: str, amount: float, account_id: str,
+                            currency: str = "NOK"):
+        transaction = utils.make_transaction(date, description, -amount, account_id, currency)
+        self.make_transaction(transaction)
+        self.saving_goals.change_balance(savings_id, amount)
+
+    def plot_account_activity(self, account_id: str) -> None:
         balance_history = self.get_balance_history(account_id)
         if not balance_history:
             return

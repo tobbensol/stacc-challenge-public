@@ -1,0 +1,36 @@
+{
+  "saving_goals": [
+    {
+      "id": "sav001",
+      "name": "Vacation",
+      "goal": 15000,
+      "current_Amount": 5502.25,
+      "currency": "NOK",
+      "account_id": "acc456"
+    },
+    {
+      "id": "sav002",
+      "name": "Phone",
+      "goal": 10000,
+      "current_Amount": 2408.5,
+      "currency": "NOK",
+      "account_id": "acc123"
+    },
+    {
+      "id": "sav003",
+      "name": "Car",
+      "goal": 100000,
+      "current_Amount": 20000,
+      "currency": "NOK",
+      "account_id": "acc123"
+    },
+  }
+}
+
+
+    ID: int
+    Name: Str
+    Goal: int
+    Current_Amount: int
+    Currency: str
+    account_id: int,
