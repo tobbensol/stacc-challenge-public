@@ -4,7 +4,7 @@ from src.bank.saving_goal import SavingGoals
 import src.utils as utils
 
 from matplotlib import pyplot as plt
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 from datetime import datetime
 import numpy as np
 
@@ -21,11 +21,11 @@ class Backend:
             return True
         return False
 
-    def get_balance_history(self, account_id: str) -> Tuple[List[datetime], List[int]]:
+    def get_balance_history(self, account_id: str) -> Tuple[Optional[List[datetime]], Optional[List[int]]]:
         account = self.accounts.get_account(account_id)
         if not account:
             print("Account not found.")
-            return (None, None)
+            return None, None
         account_balance = account["balance"]
         date, change = self.transactions.get_balance_history(account_id)
 
@@ -51,11 +51,9 @@ class Backend:
             print(f"You have saved up for \"{savings_account['name']}\", the money has been returned to your account!")
 
     def plot_account_activity(self, account_id: str) -> None:
-        balance_history = self.get_balance_history(account_id)
-        if not balance_history:
+        timestamps, balances = self.get_balance_history(account_id)
+        if not timestamps or not balances:
             return
-
-        timestamps, balances = balance_history
 
         # Linear regression
         days_since_first = [(date - timestamps[0]).days for date in timestamps]
