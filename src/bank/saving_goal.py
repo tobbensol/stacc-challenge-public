@@ -20,7 +20,7 @@ class SavingGoals:
 
         return saving_goal["current_amount"] / saving_goal["goal"]
 
-    def plot_saving_goal(self, savings_id: str) -> None:
+    def plot_saving_goal(self, savings_id: str) -> str:
         saving_goal = self.get_saving_goal(savings_id)
         if not saving_goal:
             print("Saving goal not found.")
@@ -61,6 +61,7 @@ class SavingGoals:
         plt.xticks(rotation=30)
 
         plt.show()
+        return x[-1].strftime("%Y-%m-%d")
 
     def set_monthly_payment(self, savings_id: str, amount: float) -> None:
         self.saving_goals.update({"monthly_payment": amount}, Query().id == savings_id)

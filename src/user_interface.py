@@ -65,7 +65,8 @@ Enter your choice:
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":  # Plot estimates
                     account_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
-                    self.backend.saving_goals.plot_saving_goal(account_id)
+                    end_date = self.backend.saving_goals.plot_saving_goal(account_id)
+                    print(f"Estimated to be done by: {end_date}")
                 case "4":  # Change monthly payment
                     account_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
                     monthly_payment = get_numeric_from_user("Enter new monthly payment: ", True)
