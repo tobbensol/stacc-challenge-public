@@ -47,31 +47,40 @@ Enter your choice:
             choice = input("""
 1. Add savings account
 2. Transfer to savings account
-3. Change monthly payment
-4. Make monthly payments
-5. Plot estimates
-6. Quit\n
+3. See saving accounts
+4. Change monthly payment
+5. Make monthly payments
+6. Plot estimates
+7. Quit\n
 Enter your choice: 
 """)
             match choice:
                 case "1":
                     savings_data = self.get_savings_account_from_user()
                     self.backend.saving_goals.add_saving_goal(savings_data)
-                    print(f"Successfully made savings account for {savings_data['name']} with the ID: {savings_data['id']}")
+                    print(
+                        f"Successfully made savings account for \"{savings_data['name']}\" with the ID: {savings_data['id']}")
                 case "2":
                     savings_account, transaction = self.get_savings_transfer_from_user()
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
+                    account_id = get_id_from_user(self.backend.accounts.accounts, "Enter account ID: ")
+                    accounts = self.backend.saving_goals.get_user_saving_goals(account_id)
+                    if accounts:
+                        print(self.saving_to_str(account_id, accounts))
+                    else:
+                        print(f"{account_id} has no saving accounts tied to it")
+                case "4":
                     account_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
                     monthly_payment = get_numeric_from_user("Enter new monthly payment: ", True)
                     self.backend.saving_goals.set_monthly_payment(account_id, monthly_payment)
-                case "4":
+                case "5":
                     date = get_date_from_user()
                     self.backend.make_monthly_saving(date)
-                case "5":
+                case "6":
                     account_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
                     self.backend.saving_goals.plot_saving_goal(account_id)
-                case "6":
+                case "7":
                     break
                 case _:
                     print("Please enter a valid option")
@@ -99,6 +108,17 @@ Enter your choice:
 
         return savings_id, utils.make_transaction(date, description, amount, account_id)
 
+    def saving_to_str(self, account_id, accounts) -> str:
+        output = f"{account_id}'s saving accounts:"
+        for i in accounts:
+            output += f"""id: {i["id"]}
+name: {i["name"]}
+progress: {i["current_amount"]}{i["currency"]}/{i["goal"]}{i["currency"]} = {self.backend.saving_goals.check_saving_goal_progress(i["id"]) * 100}%
+monthly payment = {i["monthly_payment"]}
+main account = {i["account_id"]}
+"""
+        return output
+
 
 def get_account_data_from_user():
     account_type = input("AccountType: ")
@@ -123,10 +143,11 @@ def get_numeric_from_user(input_str: str, positive: bool) -> float:
         try:
             value_str = input(input_str)
             value = literal_eval(value_str)
-            if not positive or value > 0:
-                break
-            else:
+            # breaks if
+            if positive and value < 0:
                 print("Please enter a positive number")
+            else:
+                break
         except:
             print("Invalid Number. Please enter a number")
     return value

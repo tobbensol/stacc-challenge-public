@@ -27,8 +27,8 @@ class SavingGoals:
         if not saving_goal:
             return 0
 
-        current_balance = saving_goal.get("balance", 0)
-        goal = saving_goal.get("saving_goal", 0)
+        current_balance = saving_goal["current_amount"]
+        goal = saving_goal["goal"]
 
         if current_balance >= goal:
             return 1  # 100% progress if the goal is achieved
