@@ -35,10 +35,11 @@ class Backend:
         if not self.make_transaction(transaction):
             return
         progress = self.saving_goals.change_balance(savings_id, -transaction["amount"])
+        # if the saving is complete, all the money is returned to the main account.
         if progress >= 1:
             savings_account = self.saving_goals.get_saving_goal(savings_id)
             return_transaction = utils.make_transaction(
-                str(datetime.now()),  # Use the current date
+                str(datetime.now()),
                 "Return from savings",
                 savings_account["goal"] * progress,
                 savings_account["account_id"],

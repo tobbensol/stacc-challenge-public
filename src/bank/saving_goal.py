@@ -26,28 +26,31 @@ class SavingGoals:
             print("Saving goal not found.")
             return
 
+        # Collect data for the plot
         current_amount = saving_goal["current_amount"]
         goal = saving_goal["goal"]
         monthly_payment = saving_goal["monthly_payment"]
 
+        # Initial values
         months = 0
         savings_progress = [current_amount]
         date = datetime.now()
         x = [date]
 
+        # linear regression
         while current_amount < goal:
             if monthly_payment == 0:
+                # I need 2 points to make a line
                 x.append(date + timedelta(days=1))
                 savings_progress *= 2
                 break
             current_amount += monthly_payment
-            if current_amount > goal:
-                current_amount = goal
             months += 1
-            date += timedelta(days=30)  # Approximating a month with 30 days
+            date += timedelta(days=30)  # about a month
             x.append(date)
             savings_progress.append(current_amount)
 
+        # Construct plots
         plt.plot(x, savings_progress, label="Savings Progress")
         plt.xlabel("Date")
         plt.ylabel("Amount")
