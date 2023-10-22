@@ -18,8 +18,9 @@ class SavingGoals:
     def __init__(self, db: TinyDB):
         self.saving_goals: TinyDB.table_class = db.table("saving_goals")
 
-    def change_balance(self, savings_id: str, amount: float) -> None:
+    def change_balance(self, savings_id: str, amount: float) -> float:
         self.saving_goals.update(add("current_amount", amount), Query().id == savings_id)
+        return self.check_saving_goal_progress(savings_id)
 
     def check_saving_goal_progress(self, savings_id: str) -> float:
         saving_goal = self.get_saving_goal(savings_id)
@@ -30,9 +31,9 @@ class SavingGoals:
         goal = saving_goal.get("saving_goal", 0)
 
         if current_balance >= goal:
-            return 100  # 100% progress if the goal is achieved
+            return 1  # 100% progress if the goal is achieved
         else:
-            return (current_balance / goal) * 100
+            return current_balance / goal
 
     def plot_saving_goal(self, savings_id: str) -> None:
         saving_goal = self.get_saving_goal(savings_id)

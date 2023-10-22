@@ -14,6 +14,10 @@ class Accounts:
             print("Could not find Account")
             return None
 
+        if self.accounts.get(Query().id == account_id)["balance"] < -amount:
+            print("Not enough available balance")
+            return None
+
         return self.accounts.update(add("balance", amount), Query().id == account_id)
 
     def update_account(self, account_data: dict) -> None:

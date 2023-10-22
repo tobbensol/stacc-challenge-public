@@ -18,13 +18,14 @@ class UserInterface:
 3. Plot Account Activity
 4. Manage Savings
 5. Print DB
-5. Quit\n
+6. Quit\n
 Enter your choice: 
 """)
             match choice:
                 case "1":
                     account_data = get_account_data_from_user()
                     self.backend.accounts.add_account(account_data)
+                    # if I used python 3.12, I would be able to use " " in the f-string :c
                     print(f"Successfully made account with the ID: {account_data['id']}")
                 case "2":
                     transaction_data = self.get_transaction_data_from_user()
@@ -62,7 +63,7 @@ Enter your choice:
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
                     account_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
-                    monthly_payment = get_numeric_from_user("Enter new monthly payment: ")
+                    monthly_payment = get_numeric_from_user("Enter new monthly payment: ", True)
                     self.backend.saving_goals.set_monthly_payment(account_id, monthly_payment)
                 case "4":
                     date = get_date_from_user()
@@ -77,7 +78,7 @@ Enter your choice:
 
     def get_transaction_data_from_user(self):
         description = input("Description: ")
-        amount = get_numeric_from_user("Amount: ")
+        amount = get_numeric_from_user("Amount: ", False)
         account_id = get_id_from_user(self.backend.accounts.accounts, "Enter account ID: ")
         date = get_date_from_user()
 
@@ -85,13 +86,13 @@ Enter your choice:
 
     def get_savings_account_from_user(self):
         name = input("What are you saving for? ")
-        goal = get_numeric_from_user("How much does is cost? ")
+        goal = get_numeric_from_user("How much does is cost? ", True)
         account_id = get_id_from_user(self.backend.accounts.accounts, "Enter account ID: ")
         return utils.make_savings_account(name, goal, 0, account_id)
 
     def get_savings_transfer_from_user(self):
         savings_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")
-        amount = get_numeric_from_user("Amount: ")
+        amount = get_numeric_from_user("Amount: ", True)
         description = f"Savings transfer to {savings_id}"
         date = get_date_from_user()
         account_id = self.backend.saving_goals.get_saving_goal(savings_id)["account_id"]
@@ -116,12 +117,15 @@ def get_date_from_user() -> str:
     return date.strftime("%Y-%m-%d")
 
 
-def get_numeric_from_user(input_str: str) -> float:
+def get_numeric_from_user(input_str: str, positive: bool) -> float:
     while True:
         # Check if input is valid
         try:
             value = literal_eval(input(input_str))
-            break
+            if not positive and value > 0:
+                break
+            else:
+                print("Please enter a positive number")
         except ValueError:
             print("Invalid Number. Please enter a number")
     return value
