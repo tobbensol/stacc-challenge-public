@@ -18,10 +18,10 @@ class SavingGoals:
     def __init__(self, db: TinyDB):
         self.saving_goals: TinyDB.table_class = db.table("saving_goals")
 
-    def change_balance(self, savings_id, amount) -> None:
+    def change_balance(self, savings_id: str, amount: float) -> None:
         self.saving_goals.update(add("current_amount", amount), Query().id == savings_id)
 
-    def check_saving_goal_progress(self, savings_id):
+    def check_saving_goal_progress(self, savings_id: str) -> float:
         saving_goal = self.get_saving_goal(savings_id)
         if not saving_goal:
             return 0
@@ -34,7 +34,7 @@ class SavingGoals:
         else:
             return (current_balance / goal) * 100
 
-    def plot_saving_goal(self, savings_id):
+    def plot_saving_goal(self, savings_id: str) -> None:
         saving_goal = self.get_saving_goal(savings_id)
         if not saving_goal:
             print("Saving goal not found.")
@@ -71,6 +71,9 @@ class SavingGoals:
         plt.grid()
 
         plt.show()
+
+    def set_monthly_payment(self, savings_id: str, amount: float) -> None:
+        self.saving_goals.update({"monthly_payment": amount}, Query().id == savings_id)
 
     def add_saving_goal(self, account: dict) -> None:
         self.saving_goals.insert(account)

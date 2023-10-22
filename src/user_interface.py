@@ -3,7 +3,6 @@ import src.utils as utils
 
 from datetime import datetime
 from ast import literal_eval
-import random
 
 
 class UserInterface:
@@ -60,7 +59,9 @@ Enter your choice:
                     savings_account, transaction = get_savings_transfer_from_user()
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
-                    pass
+                    account_id = input("Enter savings ID: ")
+                    monthly_payment = get_numeric_from_user("Enter new monthly payment: ")
+                    self.backend.saving_goals.set_monthly_payment(account_id, monthly_payment)
                 case "4":
                     date = get_date_from_user()
                     self.backend.make_monthly_saving(date)
@@ -97,16 +98,14 @@ def get_account_data_from_user():
 
 def get_savings_account_from_user():
     name = input("What are you saving for? ")
-    goal = " "
-    while not goal.isnumeric():
-        goal = input("How much does is cost? ")
+    goal = get_numeric_from_user("How much does is cost? ")
     account = input("Which account is this tied to? ")
-    return utils.make_savings_account(name, float(goal), 0, account)
+    return utils.make_savings_account(name, goal, 0, account)
 
 
 def get_savings_transfer_from_user():
     savings_id = input("Savings ID: ")
-    amount = literal_eval(input("Amount: "))
+    amount = get_numeric_from_user("Amount: ")
     description = f"Savings transfer to {savings_id}"
     date = get_date_from_user()
 
@@ -118,7 +117,17 @@ def get_date_from_user():
         date_str = input("Date (YYYY-MM-DD): ")
         try:
             date = datetime.strptime(date_str, "%Y-%m-%d")
-            break  # Exit the loop if a valid date is provided
+            break
         except ValueError:
             print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
     return date.strftime("%Y-%m-%d")
+
+
+def get_numeric_from_user(input_str):
+    while True:
+        try:
+            value = literal_eval(input(input_str))
+            break
+        except ValueError:
+            print("Invalid Number. Please enter a number")
+    return value
