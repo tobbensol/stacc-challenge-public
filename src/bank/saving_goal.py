@@ -1,8 +1,10 @@
 from tinydb import TinyDB, Query
 from tinydb.operations import add
+from matplotlib import pyplot as plt
+from datetime import datetime, timedelta
 
 
-class Saving_goals:
+class SavingGoals:
     """
     very similar to a normal account
     ID: int
@@ -16,11 +18,11 @@ class Saving_goals:
     def __init__(self, db: TinyDB):
         self.saving_goals: TinyDB.table_class = db.table("saving_goals")
 
-    def change_balance(self, id, amount) -> None:
-        self.saving_goals.update(add("current_amount", amount), Query().id == id)
+    def change_balance(self, savings_id, amount) -> None:
+        self.saving_goals.update(add("current_amount", amount), Query().id == savings_id)
 
-    def check_saving_goal_progress(self, saving_goal_id):
-        saving_goal = self.get_saving_goal(saving_goal_id)
+    def check_saving_goal_progress(self, savings_id):
+        saving_goal = self.get_saving_goal(savings_id)
         if not saving_goal:
             return 0
 
@@ -32,17 +34,55 @@ class Saving_goals:
         else:
             return (current_balance / goal) * 100
 
+    def plot_saving_goal(self, savings_id):
+        saving_goal = self.get_saving_goal(savings_id)
+        if not saving_goal:
+            print("Saving goal not found.")
+            return
+
+        current_amount = saving_goal["current_amount"]
+        goal = saving_goal["goal"]
+        monthly_payment = saving_goal["monthly_payment"]
+
+        if current_amount >= goal:
+            print("Congratulations! You have already reached your saving goal.")
+            return
+
+        months = 0
+        savings_progress = [current_amount]
+        date = datetime.now()
+        x = [date]
+
+        while current_amount < goal:
+            current_amount += monthly_payment
+            if current_amount > goal:
+                current_amount = goal
+            months += 1
+            date += timedelta(days=30)  # Approximating a month with 30 days
+            x.append(date)
+            savings_progress.append(current_amount)
+
+        plt.plot(x, savings_progress, label="Savings Progress")
+        plt.xlabel("Date")
+        plt.ylabel("Amount")
+        plt.title("Saving Goal Progress")
+        plt.axhline(y=goal, color='r', linestyle='--', label="Goal")
+        plt.legend()
+        plt.grid()
+
+        plt.show()
+
     def add_saving_goal(self, account: dict) -> None:
         self.saving_goals.insert(account)
 
-    def remove_saving_goal(self, account_id: str) -> None:
-        self.saving_goals.remove(Query().id == account_id)
+    def remove_saving_goal(self, savings_id: str) -> None:
+        self.saving_goals.remove(Query().id == savings_id)
 
-    def get_saving_goal(self, account_id: str):
-        return self.saving_goals.get(Query().id == account_id)
+    def get_saving_goal(self, savings_id: str):
+        return self.saving_goals.get(Query().id == savings_id)
 
-    def get_user_saving_goals(self, account_id: str):
-        return self.saving_goals.search(Query().account_id == account_id)
+    def get_user_saving_goals(self, savings_id: str):
+        return self.saving_goals.search(Query().account_id == savings_id)
 
     def __repr__(self):
         string = ""

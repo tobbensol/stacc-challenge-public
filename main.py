@@ -2,7 +2,7 @@ from src.user_interface import UserInterface
 from src.bank.backend import Backend
 from src.bank.transaction import Transactions
 from src.bank.account import Accounts
-from src.bank.saving_goal import Saving_goals
+from src.bank.saving_goal import SavingGoals
 
 import json
 from tinydb import TinyDB
@@ -14,7 +14,7 @@ db.drop_tables()
 # Init tables
 accounts = Accounts(db)
 transactions = Transactions(db)
-saving_goals = Saving_goals(db)
+saving_goals = SavingGoals(db)
 
 backend = Backend(accounts, transactions, saving_goals)
 user_interface = UserInterface(backend)
