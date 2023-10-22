@@ -30,16 +30,16 @@ class SavingGoals:
         goal = saving_goal["goal"]
         monthly_payment = saving_goal["monthly_payment"]
 
-        if current_amount >= goal:
-            print("Congratulations! You have already reached your saving goal.")
-            return
-
         months = 0
         savings_progress = [current_amount]
         date = datetime.now()
         x = [date]
 
         while current_amount < goal:
+            if monthly_payment == 0:
+                x.append(date + timedelta(days=1))
+                savings_progress *= 2
+                break
             current_amount += monthly_payment
             if current_amount > goal:
                 current_amount = goal
@@ -55,6 +55,7 @@ class SavingGoals:
         plt.axhline(y=goal, color="r", linestyle="--", label="Goal")
         plt.legend()
         plt.grid()
+        plt.xticks(rotation=30)
 
         plt.show()
 
