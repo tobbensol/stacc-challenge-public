@@ -29,9 +29,22 @@ class Backend:
 
         return date, [account_balance + x for x in change]
 
-    def transfer_to_savings(self, savings_id: str, transaction: dict):
+    def transfer_to_savings(self, savings_id: str, transaction: dict) -> None:
         self.make_transaction(transaction)
         progress = self.saving_goals.change_balance(savings_id, -transaction["amount"])
+        if progress >= 1:
+            savings_account = self.saving_goals.get_saving_goal(savings_id)
+            return_transaction = utils.make_transaction(
+                str(datetime.now()),  # Use the current date
+                "Return from savings",
+                savings_account["goal"] * progress,
+                savings_account["account_id"],
+                savings_account["currency"]
+            )
+            # return money, and delete goal
+            self.make_transaction(return_transaction)
+            self.saving_goals.remove_saving_goal(savings_id)
+            print(f"You have saved up for \"{savings_account['name']}\", the money has been returned to your account!")
 
     def plot_account_activity(self, account_id: str) -> None:
         balance_history = self.get_balance_history(account_id)
