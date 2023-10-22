@@ -26,7 +26,7 @@ Enter your choice:
                     account_data = get_account_data_from_user()
                     self.backend.accounts.add_account(account_data)
                     # if I used python 3.12, I would be able to use " " in the f-string :c
-                    print(f"Successfully made account with the ID: {account_data['id']}")
+                    print(f"Successfully made {account_data['account_type']} account with the ID: {account_data['id']}")
                 case "2":
                     transaction_data = self.get_transaction_data_from_user()
                     self.backend.make_transaction(transaction_data)
@@ -57,7 +57,7 @@ Enter your choice:
                 case "1":
                     savings_data = self.get_savings_account_from_user()
                     self.backend.saving_goals.add_saving_goal(savings_data)
-                    print(f"Successfully made savings account with the ID: {savings_data['id']}")
+                    print(f"Successfully made savings account for {savings_data['name']} with the ID: {savings_data['id']}")
                 case "2":
                     savings_account, transaction = self.get_savings_transfer_from_user()
                     self.backend.transfer_to_savings(savings_account, transaction)
@@ -121,12 +121,13 @@ def get_numeric_from_user(input_str: str, positive: bool) -> float:
     while True:
         # Check if input is valid
         try:
-            value = literal_eval(input(input_str))
-            if not positive and value > 0:
+            value_str = input(input_str)
+            value = literal_eval(value_str)
+            if not positive or value > 0:
                 break
             else:
                 print("Please enter a positive number")
-        except ValueError:
+        except:
             print("Invalid Number. Please enter a number")
     return value
 
