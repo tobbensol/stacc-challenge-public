@@ -21,4 +21,4 @@ python main.py
 ```
 
 ### Comment 💬
-This was a really interesting task, and i would have loved to expand it a further! At the moment it is a commandline application, but i am certain a lot of the features in the backend would work great as a part of a REST-ful API, but i am not too experienced with making APIs.
+This was a really interesting task, and i would have loved to expand it a further! At the moment it is a commandline application, but i am certain a lot of the features in the backend would work great as a part of a REST-ful API.
