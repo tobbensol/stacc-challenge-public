@@ -28,12 +28,13 @@ def make_account(account_type: str, balance: float, owner: str, currency: str = 
     })
 
 
-def make_savings_account(name: str, goal: float, current_amount: float, account_id: str, currency: str = "NOK"):
+def make_savings_account(name: str, goal: float, current_amount: float, monthly_payment: float, account_id: str, currency: str = "NOK"):
     return ({
         "id": generate_random_int_str("sav", 3),
         "name": name,
         "goal": goal,
         "current_amount": current_amount,
+        "monthly_payment": monthly_payment,
         "currency": currency,
         "account_id": account_id
     })

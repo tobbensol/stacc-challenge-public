@@ -29,7 +29,8 @@ Enter your choice:
                     print(f"Successfully made {account_data['account_type']} account with the ID: {account_data['id']}")
                 case "2":
                     transaction_data = self.get_transaction_data_from_user()
-                    self.backend.make_transaction(transaction_data)
+                    if self.backend.make_transaction(transaction_data):
+                        print("Transaction was successful!")
                 case "3":
                     account_id = get_id_from_user(self.backend.accounts.accounts, "Enter account ID: ")
                     self.backend.plot_account_activity(account_id)
@@ -97,7 +98,7 @@ Enter your choice:
         name = input("What are you saving for? ")
         goal = get_numeric_from_user("How much does is cost? ", True)
         account_id = get_id_from_user(self.backend.accounts.accounts, "Enter account ID: ")
-        return utils.make_savings_account(name, goal, 0, account_id)
+        return utils.make_savings_account(name, goal, 0, 0, account_id)
 
     def get_savings_transfer_from_user(self):
         savings_id = get_id_from_user(self.backend.saving_goals.saving_goals, "Enter savings ID: ")

@@ -15,9 +15,11 @@ class Backend:
         self.transactions: Transactions = transactions
         self.saving_goals: SavingGoals = saving_goals
 
-    def make_transaction(self, transaction: dict) -> None:
+    def make_transaction(self, transaction: dict) -> bool:
         if self.accounts.change_balance(transaction):
             self.transactions.add_transactions(transaction)
+            return True
+        return False
 
     def get_balance_history(self, account_id: str) -> Tuple[List[datetime], List[int]]:
         account = self.accounts.get_account(account_id)
@@ -30,7 +32,8 @@ class Backend:
         return date, [account_balance + x for x in change]
 
     def transfer_to_savings(self, savings_id: str, transaction: dict) -> None:
-        self.make_transaction(transaction)
+        if not self.make_transaction(transaction):
+            return
         progress = self.saving_goals.change_balance(savings_id, -transaction["amount"])
         if progress >= 1:
             savings_account = self.saving_goals.get_saving_goal(savings_id)
@@ -42,7 +45,8 @@ class Backend:
                 savings_account["currency"]
             )
             # return money, and delete goal
-            self.make_transaction(return_transaction)
+            if not self.make_transaction(return_transaction):
+                return
             self.saving_goals.remove_saving_goal(savings_id)
             print(f"You have saved up for \"{savings_account['name']}\", the money has been returned to your account!")
 
