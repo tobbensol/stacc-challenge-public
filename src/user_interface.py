@@ -46,9 +46,10 @@ Enter your choice:
             choice = input("""
 1. Add savings account
 2. Transfer to savings account
-3. Make monthly payments
-4. Plot estimates
-5. Quit\n
+3. Change monthly payment
+4. Make monthly payments
+5. Plot estimates
+6. Quit\n
 Enter your choice: 
 """)
             match choice:
@@ -59,14 +60,17 @@ Enter your choice:
                     savings_account, transaction = get_savings_transfer_from_user()
                     self.backend.transfer_to_savings(savings_account, transaction)
                 case "3":
-                    self.backend.make_monthly_saving()
-                case "4":
                     pass
+                case "4":
+                    date = get_date_from_user()
+                    self.backend.make_monthly_saving(date)
                 case "5":
+                    account_id = input("Enter savings ID: ")
+                    self.backend.saving_goals.plot_saving_goal(account_id)
+                case "6":
                     break
                 case _:
                     print("Please enter a valid option")
-            print(self.backend.saving_goals)
 
 
 def get_transaction_data_from_user():
@@ -104,7 +108,12 @@ def get_savings_transfer_from_user():
     savings_id = input("Savings ID: ")
     amount = literal_eval(input("Amount: "))
     description = f"Savings transfer to {savings_id}"
+    date = get_date_from_user()
 
+    return savings_id, utils.make_transaction(date, description, amount, "temp")
+
+
+def get_date_from_user():
     while True:
         date_str = input("Date (YYYY-MM-DD): ")
         try:
@@ -112,5 +121,4 @@ def get_savings_transfer_from_user():
             break  # Exit the loop if a valid date is provided
         except ValueError:
             print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
-
-    return savings_id, utils.make_transaction(date.strftime("%Y-%m-%d"), description, amount, "temp")
+    return date.strftime("%Y-%m-%d")

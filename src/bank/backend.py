@@ -1,6 +1,6 @@
 from src.bank.account import Accounts
 from src.bank.transaction import Transactions
-from src.bank.saving_goal import Saving_goals
+from src.bank.saving_goal import SavingGoals
 import src.utils as utils
 
 from matplotlib import pyplot as plt
@@ -10,10 +10,10 @@ import numpy as np
 
 
 class Backend:
-    def __init__(self, accounts: Accounts, transactions: Transactions, saving_goals: Saving_goals):
+    def __init__(self, accounts: Accounts, transactions: Transactions, saving_goals: SavingGoals):
         self.accounts: Accounts = accounts
         self.transactions: Transactions = transactions
-        self.saving_goals: Saving_goals = saving_goals
+        self.saving_goals: SavingGoals = saving_goals
 
     def make_transaction(self, transaction: dict) -> None:
         self.transactions.add_transactions(transaction)
@@ -23,7 +23,7 @@ class Backend:
         account = self.accounts.get_account(account_id)
         if not account:
             print("Account not found.")
-            return None
+            return (None, None)
         account_balance = account["balance"]
         date, change = self.transactions.get_balance_history(account_id)
 
@@ -31,6 +31,9 @@ class Backend:
 
     def transfer_to_savings(self, savings_id: str, transaction: dict):
         transaction["account_id"] = self.saving_goals.get_saving_goal(savings_id)["account_id"]
+        if not transaction:
+            print("Account was not found")
+            return
         self.make_transaction(transaction)
         self.saving_goals.change_balance(savings_id, transaction["amount"])
 
@@ -59,7 +62,7 @@ class Backend:
         # Display the chart or save it to a file
         plt.show()
 
-    def make_monthly_saving(self) -> None:
+    def make_monthly_saving(self, date) -> None:
         goals = self.saving_goals.saving_goals.all()
         for goal in goals:
             account = self.accounts.get_account(goal["account_id"])
@@ -71,11 +74,11 @@ class Backend:
 
             if account["balance"] >= monthly_payment:
                 # Deduct the monthly payment from the account
-                transaction = utils.make_transaction(datetime.now().strftime("%Y-%m-%d"),
-                                                                    f"Monthly payment for {goal['name']}",
-                                                                    -monthly_payment,
-                                                                    goal["account_id"]
-                                                                    )
+                transaction = utils.make_transaction(date,
+                                                     f"Monthly payment for {goal['name']}",
+                                                     -monthly_payment,
+                                                     goal["account_id"]
+                                                     )
                 self.make_transaction(transaction)
                 self.saving_goals.change_balance(goal["id"], monthly_payment)
 
