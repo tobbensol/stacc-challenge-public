@@ -31,7 +31,7 @@ class Backend:
 
     def transfer_to_savings(self, savings_id: str, transaction: dict):
         self.make_transaction(transaction)
-        self.saving_goals.change_balance(savings_id, transaction["amount"])
+        progress = self.saving_goals.change_balance(savings_id, -transaction["amount"])
 
     def plot_account_activity(self, account_id: str) -> None:
         balance_history = self.get_balance_history(account_id)
@@ -75,8 +75,7 @@ class Backend:
                                                      -monthly_payment,
                                                      goal["account_id"]
                                                      )
-                self.make_transaction(transaction)
-                self.saving_goals.change_balance(goal["id"], monthly_payment)
+                self.transfer_to_savings(goal["id"], transaction)
 
     def __repr__(self):
         return (f"Accounts:\n{self.accounts}\n" +

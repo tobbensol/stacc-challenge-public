@@ -106,12 +106,13 @@ Enter your choice:
         date = get_date_from_user()
         account_id = self.backend.saving_goals.get_saving_goal(savings_id)["account_id"]
 
-        return savings_id, utils.make_transaction(date, description, amount, account_id)
+        return savings_id, utils.make_transaction(date, description, -amount, account_id)
 
     def saving_to_str(self, account_id, accounts) -> str:
         output = f"{account_id}'s saving accounts:"
         for i in accounts:
-            output += f"""id: {i["id"]}
+            output += f"""
+id: {i["id"]}
 name: {i["name"]}
 progress: {i["current_amount"]}{i["currency"]}/{i["goal"]}{i["currency"]} = {self.backend.saving_goals.check_saving_goal_progress(i["id"]) * 100}%
 monthly payment = {i["monthly_payment"]}

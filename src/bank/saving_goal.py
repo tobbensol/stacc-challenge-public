@@ -5,15 +5,6 @@ from datetime import datetime, timedelta
 
 
 class SavingGoals:
-    """
-    very similar to a normal account
-    ID: int
-    Name: Str
-    Goal: int
-    Current_Amount: int
-    Currency: str
-    account_id: int
-    """
 
     def __init__(self, db: TinyDB):
         self.saving_goals: TinyDB.table_class = db.table("saving_goals")
@@ -27,13 +18,7 @@ class SavingGoals:
         if not saving_goal:
             return 0
 
-        current_balance = saving_goal["current_amount"]
-        goal = saving_goal["goal"]
-
-        if current_balance >= goal:
-            return 1  # 100% progress if the goal is achieved
-        else:
-            return current_balance / goal
+        return saving_goal["current_amount"] / saving_goal["goal"]
 
     def plot_saving_goal(self, savings_id: str) -> None:
         saving_goal = self.get_saving_goal(savings_id)
