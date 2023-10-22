@@ -66,7 +66,7 @@ class SavingGoals:
         plt.xlabel("Date")
         plt.ylabel("Amount")
         plt.title("Saving Goal Progress")
-        plt.axhline(y=goal, color='r', linestyle='--', label="Goal")
+        plt.axhline(y=goal, color="r", linestyle="--", label="Goal")
         plt.legend()
         plt.grid()
 

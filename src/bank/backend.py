@@ -16,8 +16,8 @@ class Backend:
         self.saving_goals: SavingGoals = saving_goals
 
     def make_transaction(self, transaction: dict) -> None:
-        self.transactions.add_transactions(transaction)
-        self.accounts.change_balance(transaction)
+        if self.accounts.change_balance(transaction):
+            self.transactions.add_transactions(transaction)
 
     def get_balance_history(self, account_id: str) -> Tuple[List[datetime], List[int]]:
         account = self.accounts.get_account(account_id)
@@ -30,10 +30,6 @@ class Backend:
         return date, [account_balance + x for x in change]
 
     def transfer_to_savings(self, savings_id: str, transaction: dict):
-        transaction["account_id"] = self.saving_goals.get_saving_goal(savings_id)["account_id"]
-        if not transaction:
-            print("Account was not found")
-            return
         self.make_transaction(transaction)
         self.saving_goals.change_balance(savings_id, transaction["amount"])
 
@@ -51,8 +47,8 @@ class Backend:
 
         # Create a line chart to visualize the account balance over time
         plt.figure(figsize=(10, 5))
-        plt.plot(timestamps, balances, marker='o')
-        plt.plot(timestamps, regression_line, 'r-', label='Linear Regression Line')
+        plt.plot(timestamps, balances, drawstyle="steps-post", marker="o")
+        plt.plot(timestamps, regression_line, "r-", label="Linear Regression Line")
         plt.title(f"Account Activity for Account ID {account_id}")
         plt.xlabel("Date")
         plt.ylabel("Account Balance (NOK)")
